@@ -59,8 +59,22 @@ function define(
   dependencyMap?: DependencyMap,
 ) {
   if (moduleId in modules) {
+    //yangxu 如果后面定义的module会覆盖新的。
+    let mod = modules[moduleId];
+    if (factory.toString() !== mod.factory.toString()) {
+      modules[moduleId] = {
+        dependencyMap,
+        exports: undefined,
+        factory,
+        hasError: false,
+        isInitialized: false,
+      };
+      require(id);
+    }
     // prevent repeated calls to `global.nativeRequire` to overwrite modules
     // that are already loaded
+
+    
     return;
   }
   modules[moduleId] = {
@@ -94,7 +108,7 @@ function require(moduleId: ModuleID | VerboseModuleNameForDev) {
     } else {
       console.warn(
         `Requiring module '${verboseName}' by name is only supported for ` +
-        'debugging purposes and will BREAK IN PRODUCTION!'
+        'debugging purposes and will BREAK IN PRODUCTION! RNPackager'
       );
     }
   }
