@@ -32,7 +32,6 @@ export type Unbundle = {
 
 type SourceMapFormat = 'undetermined' | 'indexed' | 'flattened';
 
-const SOURCEMAPPING_URL = '\n\/\/# sourceMappingURL=';
 
 class Bundle extends BundleBase {
 
@@ -172,11 +171,6 @@ class Bundle extends BundleBase {
 
     let source = super.getSource(options);
 
-    if (options.inlineSourceMap) {
-      source += SOURCEMAPPING_URL + this._getInlineSourceMap(options.dev);
-    } else if (this._sourceMapUrl) {
-      source += SOURCEMAPPING_URL + this._sourceMapUrl;
-    }
 
     return source;
   }
